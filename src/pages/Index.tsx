@@ -62,16 +62,6 @@ const Index = () => {
             My Favorites
           </Link>
 
-          {isAdmin && (
-            <Link
-              to="/admin"
-              className="nav-button flex items-center justify-center gap-2 bg-primary/10 border-primary"
-            >
-              <Shield size={20} />
-              Admin Dashboard
-            </Link>
-          )}
-          
           {buttonNames.map((name, index) => (
             <Link
               key={index}
@@ -81,6 +71,16 @@ const Index = () => {
               {name}
             </Link>
           ))}
+
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="nav-button flex items-center justify-center gap-2 bg-primary/10 border-primary"
+            >
+              <Shield size={20} />
+              Admin Dashboard
+            </Link>
+          )}
         </nav>
       </main>
     </div>
