@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Home, ArrowLeft, Users, Shield, Ban, KeyRound } from "lucide-react";
 import TopRightControls from "@/components/TopRightControls";
-import { getEvents } from "@/lib/tracking";
+import { getEvents, estimateDemographics } from "@/lib/tracking";
 import { supabase } from "@/integrations/supabase/client";
 
 interface UserProfile {
