@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { BrandSelect, ModelSelect, CategorySelect, TagInput } from "@/components/admin/Selectors";
 
 const systemNames = [
   "joule-victorum",
