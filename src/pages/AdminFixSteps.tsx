@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Home, ArrowLeft, Wrench, Plus, Trash2 } from "lucide-react";
 import TopRightControls from "@/components/TopRightControls";
+import { BrandSelect, ModelSelect, TagInput } from "@/components/admin/Selectors";
 
 interface FixStep {
   id: string;
