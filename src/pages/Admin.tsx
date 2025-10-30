@@ -196,9 +196,7 @@ export default function Admin() {
 
   return (
     <div className="page-container">
-      <div className="relative w-full max-w-xl">
-        <div className="absolute top-[-1.5rem] right-0"><TopRightControls /></div>
-      </div>
+      <TopRightControls />
       <header className="flex items-center justify-between mb-8 w-full max-w-xl">
         <Link to="/">
           <Button variant="ghost" size="icon" aria-label="Go home">
