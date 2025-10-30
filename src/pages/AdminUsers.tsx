@@ -51,7 +51,6 @@ export default function AdminUsers() {
       } as UserProfile;
       p.visits += e.type === "page_view" ? 1 : 0;
       if ((e as any).geo && (e as any).geo.lat) {
-        // geo reverse lookup omitted (no external deps), store coords as city string
         p.city = `${(e as any).geo.lat.toFixed(2)}, ${(e as any).geo.lon.toFixed(2)}`;
       }
       if (e.type === "search") {
@@ -63,10 +62,17 @@ export default function AdminUsers() {
       }
       byUser.set(uid, p);
     }
-    return Array.from(byUser.values()).map(u => ({
+    const list = Array.from(byUser.values()).map(u => ({
       ...u,
       topErrors: u.topErrors.sort((a,b)=>b.count-a.count).slice(0,5)
     }));
+    // attach demographics heuristic per user
+    return list.map(u => {
+      const evts = events.filter(e => (e.userId || e.deviceId) === u.id);
+      const demo = estimateDemographics(evts);
+      (u as any).estAge = demo.age; (u as any).estGender = demo.gender;
+      return u;
+    });
   }, [events, profilesMap]);
 
   const selectedUser = users.find(u => u.id === selected) || null;
