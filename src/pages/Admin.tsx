@@ -319,6 +319,10 @@ function ErrorCodeForm({
       manual_url: "",
       video_url: "",
       related_codes: [],
+      brand: undefined,
+      model: undefined,
+      category: undefined,
+      tags: [],
     }
   );
 
