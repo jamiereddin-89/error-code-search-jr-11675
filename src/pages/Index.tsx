@@ -3,6 +3,12 @@ import { Moon, Sun, Star, Shield } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { AuthButton } from "@/components/AuthButton";
+import { Settings } from "@/components/Settings";
+import { ServiceHistory } from "@/components/ServiceHistory";
+import { EquipmentScanner } from "@/components/EquipmentScanner";
+import { TroubleshootingWizard } from "@/components/TroubleshootingWizard";
+import { PhotoDiagnosis } from "@/components/PhotoDiagnosis";
+import { CostEstimator } from "@/components/CostEstimator";
 
 const buttonNames = [
   "Joule Victorum",
@@ -37,6 +43,15 @@ const Index = () => {
 
       <main>
         <h1 className="header">Error Code Search</h1>
+
+        <div className="flex flex-wrap gap-2 justify-center mb-6">
+          <Settings />
+          <ServiceHistory />
+          <EquipmentScanner />
+          <TroubleshootingWizard />
+          <PhotoDiagnosis />
+          <CostEstimator />
+        </div>
 
         <nav className="button-container">
           <Link

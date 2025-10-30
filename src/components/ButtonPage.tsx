@@ -8,6 +8,12 @@ import { Input } from "./ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { EnhancedErrorCard } from "./EnhancedErrorCard";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { Settings } from "./Settings";
+import { ServiceHistory } from "./ServiceHistory";
+import { EquipmentScanner } from "./EquipmentScanner";
+import { TroubleshootingWizard } from "./TroubleshootingWizard";
+import { PhotoDiagnosis } from "./PhotoDiagnosis";
+import { CostEstimator } from "./CostEstimator";
 import Fuse from "fuse.js";
 
 interface ButtonPageProps {
@@ -101,6 +107,15 @@ const ButtonPage = ({ title }: ButtonPageProps) => {
 
       <main>
         <h1 className="header">{title}</h1>
+
+        <div className="flex flex-wrap gap-2 justify-center mb-6">
+          <Settings />
+          <ServiceHistory />
+          <EquipmentScanner />
+          <TroubleshootingWizard />
+          <PhotoDiagnosis />
+          <CostEstimator />
+        </div>
 
         <nav className="w-full max-w-md space-y-4">
           <Link to="/" className="nav-button block">
