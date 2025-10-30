@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Home, ArrowLeft, FilePlus2, Save } from "lucide-react";
 import TopRightControls from "@/components/TopRightControls";
+import { BrandSelect, ModelSelect, CategorySelect, TagInput } from "@/components/admin/Selectors";
 
 interface ErrorInfo {
   id: string;
@@ -15,6 +16,17 @@ interface ErrorInfo {
 
 function readInfos(): ErrorInfo[] { try { const r = localStorage.getItem("jr_error_metadata"); return r? JSON.parse(r): []; } catch { return []; } }
 function writeInfos(s: ErrorInfo[]) { localStorage.setItem("jr_error_metadata", JSON.stringify(s)); }
+
+function BrandModelCategoryForm({ form, setForm }: any) {
+  return (
+    <div className="grid grid-cols-1 gap-2">
+      <BrandSelect value={form.brand||null} onChange={(val)=>setForm({...form, brand: val||undefined, model: undefined})} />
+      <ModelSelect value={form.model||null} brandId={form.brand||null} onChange={(val)=>setForm({...form, model: val||undefined})} />
+      <CategorySelect value={form.category||null} onChange={(val)=>setForm({...form, category: val||undefined})} />
+      <TagInput value={[] } onChange={(tags)=>setForm({...form, tags})} />
+    </div>
+  );
+}
 
 export default function AdminAddErrorInfo() {
   const [list, setList] = useState<ErrorInfo[]>(readInfos());
