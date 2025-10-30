@@ -119,7 +119,7 @@ async function insertModels() {
       continue;
     }
     const rows = [{ name: modelName, brand_id: brandData.id }];
-    const { error } = await supabase.from("models").upsert(rows, { onConflict: "name" });
+    const { error } = await supabase.from("models").upsert(rows, { onConflict: ["brand_id", "name"] });
     if (error) console.error("Error upserting model:", modelName, error.message);
     else console.log("Upserted model:", modelName);
   }
