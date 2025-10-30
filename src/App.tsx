@@ -7,6 +7,11 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Index from "./pages/Index";
 import Favorites from "./pages/Favorites";
 import Admin from "./pages/Admin";
+import AdminUsers from "./pages/AdminUsers";
+import AdminAnalytics from "./pages/AdminAnalytics";
+import AdminFixSteps from "./pages/AdminFixSteps";
+import AdminAppLogs from "./pages/AdminAppLogs";
+import AdminAddErrorInfo from "./pages/AdminAddErrorInfo";
 import ButtonPage from "./components/ButtonPage";
 import InstallPrompt from "./components/InstallPrompt";
 import AIAssistant from "./components/AIAssistant";
@@ -43,6 +48,11 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/analytics" element={<AdminAnalytics />} />
+            <Route path="/admin/fix-steps" element={<AdminFixSteps />} />
+            <Route path="/admin/app-logs" element={<AdminAppLogs />} />
+            <Route path="/admin/add-error-info" element={<AdminAddErrorInfo />} />
             <Route path="/pdf-files" element={<ButtonPage title="PDF Files" />} />
             {buttonRoutes.map((route, index) => (
               <Route key={index} path={route.path} element={route.element} />
