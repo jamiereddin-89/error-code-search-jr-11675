@@ -73,6 +73,15 @@
   body {
     @apply bg-background text-foreground transition-colors duration-300;
   }
+
+  /* Hide scrollbars globally */
+  *::-webkit-scrollbar {
+    display: none;
+  }
+  * {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
 }
 
 .nav-button {

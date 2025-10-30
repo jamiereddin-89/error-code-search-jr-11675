@@ -18,6 +18,7 @@ export function AuthButton() {
   const [user, setUser] = useState<any>(null);
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
+  const { isAdmin } = useUserRole();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -104,7 +105,7 @@ export function AuthButton() {
     return (
       <Button variant="outline" onClick={handleSignOut}>
         <LogOut className="mr-2 h-4 w-4" />
-        Sign Out
+        {isAdmin ? <span className="text-yellow-400 font-semibold">ADMIN</span> : "Sign Out"}
       </Button>
     );
   }
