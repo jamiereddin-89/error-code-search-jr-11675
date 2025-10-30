@@ -17,6 +17,7 @@ import InstallPrompt from "./components/InstallPrompt";
 import AIAssistant from "./components/AIAssistant";
 import AdminRoute from "./components/AdminRoute";
 import AnalyticsListener from "./components/AnalyticsListener";
+import SyncBridge from "./components/SyncBridge";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => (
         <AIAssistant />
         <HashRouter>
           <AnalyticsListener />
+          <SyncBridge />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/favorites" element={<Favorites />} />
