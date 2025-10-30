@@ -365,6 +365,28 @@ function ErrorCodeForm({
         />
       </div>
 
+      <div className="grid grid-cols-1 gap-2">
+        <BrandSelect value={formData.brand || null} onChange={async (brandId) => {
+          if (!brandId) { setFormData({ ...formData, brand: undefined, model: undefined }); return; }
+          const { data } = await supabase.from('brands').select('name').eq('id', brandId).maybeSingle();
+          setFormData({ ...formData, brand: data?.name || undefined, model: undefined });
+        }} />
+
+        <ModelSelect value={formData.model || null} brandId={null} onChange={async (modelId) => {
+          if (!modelId) { setFormData({ ...formData, model: undefined }); return; }
+          const { data } = await supabase.from('models').select('name').eq('id', modelId).maybeSingle();
+          setFormData({ ...formData, model: data?.name || undefined });
+        }} />
+
+        <CategorySelect value={formData.category || null} onChange={async (catId) => {
+          if (!catId) { setFormData({ ...formData, category: undefined }); return; }
+          const { data } = await supabase.from('categories').select('name').eq('id', catId).maybeSingle();
+          setFormData({ ...formData, category: data?.name || undefined });
+        }} />
+
+        <TagInput value={formData.tags || []} onChange={(tags)=>setFormData({ ...formData, tags })} />
+      </div>
+
       <div>
         <Label htmlFor="meaning">Meaning</Label>
         <Textarea
