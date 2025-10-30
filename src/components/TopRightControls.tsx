@@ -1,5 +1,7 @@
 import { AuthButton } from "@/components/AuthButton";
 import { Settings } from "@/components/Settings";
+import { AuthButton } from "@/components/AuthButton";
+import { useUserRole } from "@/hooks/useUserRole";
 
 export const TopRightControls = () => {
   const { isAdmin } = useUserRole();
