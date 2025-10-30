@@ -111,3 +111,22 @@ export function exportLogs(): string {
 export function clearLogs() {
   writeArray<AppLogEntry>(LS_KEYS.logs, []);
 }
+
+export type AgeGroup = "18-24" | "25-34" | "35-54" | "55+" | "unknown";
+export type GenderEst = "male" | "female" | "unknown";
+
+export function estimateDemographics(events: any[]): { age: AgeGroup; gender: GenderEst } {
+  // Heuristic: use average time between interactions and device hints.
+  const clicks = events.filter(e => e.type === "element_click" || e.type === "search").sort((a,b)=>a.ts-b.ts);
+  if (clicks.length < 2) return { age: "unknown", gender: "unknown" };
+  let sum = 0; for (let i=1;i<clicks.length;i++){ sum += (clicks[i].ts - clicks[i-1].ts); }
+  const avg = sum / (clicks.length - 1);
+  let age: AgeGroup = "unknown";
+  if (avg < 1500) age = "18-24"; else if (avg < 2500) age = "25-34"; else if (avg < 5000) age = "35-54"; else age = "55+";
+  const ua = navigator.userAgent.toLowerCase();
+  // Very weak, default unknown; small nudge based on platform usage only
+  let gender: GenderEst = "unknown";
+  if (ua.includes("iphone") || ua.includes("mac os")) gender = "female"; // placeholder heuristic
+  if (ua.includes("linux") || ua.includes("windows nt")) gender = gender === "unknown" ? "male" : gender;
+  return { age, gender };
+}
