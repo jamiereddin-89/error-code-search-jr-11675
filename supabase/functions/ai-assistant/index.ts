@@ -12,7 +12,56 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Verify authentication by checking for JWT token
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return new Response(
+        JSON.stringify({ error: "Missing or invalid authorization header" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Verify JWT by calling Supabase auth endpoint
+    const token = authHeader.replace('Bearer ', '');
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const verifyResponse = await fetch(`${supabaseUrl}/auth/v1/user`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'apikey': Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      },
+    });
+
+    if (!verifyResponse.ok) {
+      return new Response(
+        JSON.stringify({ error: "Invalid or expired token" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const { messages, context } = await req.json();
+    
+    // Input validation
+    if (!Array.isArray(messages)) {
+      return new Response(
+        JSON.stringify({ error: "Messages must be an array" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (messages.length > 50) {
+      return new Response(
+        JSON.stringify({ error: "Too many messages (max 50)" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (context && typeof context === 'string' && context.length > 5000) {
+      return new Response(
+        JSON.stringify({ error: "Context too large (max 5000 characters)" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     if (!LOVABLE_API_KEY) {

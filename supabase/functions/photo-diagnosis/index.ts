@@ -12,7 +12,56 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Verify authentication by checking for JWT token
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return new Response(
+        JSON.stringify({ error: "Missing or invalid authorization header" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Verify JWT by calling Supabase auth endpoint
+    const token = authHeader.replace('Bearer ', '');
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const verifyResponse = await fetch(`${supabaseUrl}/auth/v1/user`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'apikey': Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      },
+    });
+
+    if (!verifyResponse.ok) {
+      return new Response(
+        JSON.stringify({ error: "Invalid or expired token" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const { imageBase64 } = await req.json();
+    
+    // Input validation
+    if (!imageBase64 || typeof imageBase64 !== 'string') {
+      return new Response(
+        JSON.stringify({ error: "Invalid image data" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (imageBase64.length > 10_000_000) { // ~7.5MB max
+      return new Response(
+        JSON.stringify({ error: "Image too large (max 7.5MB)" }),
+        { status: 413, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (!imageBase64.startsWith('data:image/')) {
+      return new Response(
+        JSON.stringify({ error: "Invalid image format" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     if (!LOVABLE_API_KEY) {
