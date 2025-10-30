@@ -366,22 +366,22 @@ function ErrorCodeForm({
       </div>
 
       <div className="grid grid-cols-1 gap-2">
-        <BrandSelect value={formData.brand || null} onChange={async (brandId) => {
-          if (!brandId) { setFormData({ ...formData, brand: undefined, model: undefined }); return; }
+        <BrandSelect value={formData.brand_id || null} onChange={async (brandId) => {
+          if (!brandId) { setFormData({ ...formData, brand_id: undefined, brand: undefined, model_id: undefined, model: undefined }); return; }
           const { data } = await supabase.from('brands').select('name').eq('id', brandId).maybeSingle();
-          setFormData({ ...formData, brand: data?.name || undefined, model: undefined });
+          setFormData({ ...formData, brand_id: brandId, brand: data?.name || undefined, model_id: undefined, model: undefined });
         }} />
 
-        <ModelSelect value={formData.model || null} brandId={null} onChange={async (modelId) => {
-          if (!modelId) { setFormData({ ...formData, model: undefined }); return; }
+        <ModelSelect value={formData.model_id || null} brandId={formData.brand_id||null} onChange={async (modelId) => {
+          if (!modelId) { setFormData({ ...formData, model_id: undefined, model: undefined }); return; }
           const { data } = await supabase.from('models').select('name').eq('id', modelId).maybeSingle();
-          setFormData({ ...formData, model: data?.name || undefined });
+          setFormData({ ...formData, model_id: modelId, model: data?.name || undefined });
         }} />
 
-        <CategorySelect value={formData.category || null} onChange={async (catId) => {
-          if (!catId) { setFormData({ ...formData, category: undefined }); return; }
+        <CategorySelect value={formData.category_id || null} onChange={async (catId) => {
+          if (!catId) { setFormData({ ...formData, category_id: undefined, category: undefined }); return; }
           const { data } = await supabase.from('categories').select('name').eq('id', catId).maybeSingle();
-          setFormData({ ...formData, category: data?.name || undefined });
+          setFormData({ ...formData, category_id: catId, category: data?.name || undefined });
         }} />
 
         <TagInput value={formData.tags || []} onChange={(tags)=>setFormData({ ...formData, tags })} />
