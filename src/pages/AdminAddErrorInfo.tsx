@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { Home, ArrowLeft, FilePlus2 } from "lucide-react";
+import TopRightControls from "@/components/TopRightControls";
 
 export default function AdminAddErrorInfo() {
   return (
     <div className="page-container">
+      <TopRightControls />
       <header className="flex items-center justify-between mb-8 w-full max-w-xl">
         <div className="flex items-center gap-2">
           <Link to="/admin">

@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { Home, ArrowLeft, Wrench } from "lucide-react";
+import TopRightControls from "@/components/TopRightControls";
 
 export default function AdminFixSteps() {
   return (
     <div className="page-container">
+      <TopRightControls />
       <header className="flex items-center justify-between mb-8 w-full max-w-xl">
         <div className="flex items-center gap-2">
           <Link to="/admin">

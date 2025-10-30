@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Home, Plus, Edit, Trash2, Users, BarChart3, Wrench, ScrollText, FilePlus2 } from "lucide-react";
+import TopRightControls from "@/components/TopRightControls";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Button } from "@/components/ui/button";
@@ -195,6 +196,9 @@ export default function Admin() {
 
   return (
     <div className="page-container">
+      <div className="relative w-full max-w-xl">
+        <div className="absolute top-[-1.5rem] right-0"><TopRightControls /></div>
+      </div>
       <header className="flex items-center justify-between mb-8 w-full max-w-xl">
         <Link to="/">
           <Button variant="ghost" size="icon" aria-label="Go home">

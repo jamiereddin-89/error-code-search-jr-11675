@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { Star, Shield } from "lucide-react";
 import { useUserRole } from "@/hooks/useUserRole";
-import { AuthButton } from "@/components/AuthButton";
-import { Settings } from "@/components/Settings";
+import TopRightControls from "@/components/TopRightControls";
 import { ServiceHistory } from "@/components/ServiceHistory";
 import { EquipmentScanner } from "@/components/EquipmentScanner";
 import { TroubleshootingWizard } from "@/components/TroubleshootingWizard";
@@ -28,10 +27,7 @@ const Index = () => {
 
   return (
     <div className="page-container">
-      <div className="absolute top-4 right-4 flex gap-2 items-center">
-        <AuthButton />
-        <Settings />
-      </div>
+      <TopRightControls />
 
       <main>
         <h1 className="header">JR Heat Pumps</h1>
