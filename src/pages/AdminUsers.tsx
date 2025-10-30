@@ -138,6 +138,8 @@ export default function AdminUsers() {
               <div><span className="font-medium">Device:</span> {selectedUser.deviceId}</div>
               <div><span className="font-medium">Location:</span> {selectedUser.city || "-"}</div>
               <div><span className="font-medium">Visits:</span> {selectedUser.visits}</div>
+              <div><span className="font-medium">EST Gender:</span> {(selectedUser as any).estGender || "unknown"}</div>
+              <div><span className="font-medium">EST Age:</span> {(selectedUser as any).estAge || "unknown"}</div>
               <div>
                 <span className="font-medium">Top Error Codes:</span>
                 <ul className="list-disc ml-5">
