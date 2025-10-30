@@ -38,7 +38,7 @@ export const Settings = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" aria-label="Open settings">
           <SettingsIcon className="h-5 w-5" />
         </Button>
       </DialogTrigger>

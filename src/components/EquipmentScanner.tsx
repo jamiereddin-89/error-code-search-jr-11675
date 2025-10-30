@@ -134,7 +134,7 @@ export const EquipmentScanner = () => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" aria-label="Scan equipment QR code">
           <QrCode className="h-5 w-5" />
         </Button>
       </DialogTrigger>

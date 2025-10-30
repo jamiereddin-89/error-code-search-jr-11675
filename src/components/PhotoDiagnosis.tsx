@@ -103,7 +103,7 @@ export const PhotoDiagnosis = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" aria-label="Upload photo for diagnosis">
           <Camera className="h-5 w-5" />
         </Button>
       </DialogTrigger>

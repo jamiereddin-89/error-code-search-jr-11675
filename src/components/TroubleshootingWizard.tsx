@@ -115,7 +115,7 @@ export const TroubleshootingWizard = () => {
       }}
     >
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" aria-label="Open troubleshooting wizard">
           <Lightbulb className="h-5 w-5" />
         </Button>
       </DialogTrigger>

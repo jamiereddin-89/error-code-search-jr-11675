@@ -149,7 +149,7 @@ export const ServiceHistory = () => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" aria-label="View service history">
           <History className="h-5 w-5" />
         </Button>
       </DialogTrigger>

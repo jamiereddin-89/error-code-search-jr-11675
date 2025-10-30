@@ -76,7 +76,7 @@ export const CostEstimator = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" aria-label="Estimate repair costs">
           <Calculator className="h-5 w-5" />
         </Button>
       </DialogTrigger>
