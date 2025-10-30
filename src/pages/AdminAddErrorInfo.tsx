@@ -51,9 +51,7 @@ export default function AdminAddErrorInfo() {
       <div className="w-full max-w-xl grid gap-4">
         <div className="border rounded p-3 space-y-2">
           <h2 className="font-semibold">New Error Info</h2>
-          <input className="home-button w-full" placeholder="Brand" value={form.brand||""} onChange={e=>setForm({...form, brand:e.target.value})} />
-          <input className="home-button w-full" placeholder="Model" value={form.model||""} onChange={e=>setForm({...form, model:e.target.value})} />
-          <input className="home-button w-full" placeholder="Category" value={form.category||""} onChange={e=>setForm({...form, category:e.target.value})} />
+          <BrandModelCategoryForm form={form} setForm={setForm} />
           <input className="home-button w-full" placeholder="Error Code" value={form.error_code||""} onChange={e=>setForm({...form, error_code:e.target.value})} />
           <textarea className="w-full h-24 p-3 border rounded" placeholder="Meaning" value={form.meaning||""} onChange={e=>setForm({...form, meaning:e.target.value})} />
           <textarea className="w-full h-24 p-3 border rounded" placeholder="Solution" value={form.solution||""} onChange={e=>setForm({...form, solution:e.target.value})} />
