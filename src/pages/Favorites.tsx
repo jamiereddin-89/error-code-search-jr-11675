@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Star, Home } from "lucide-react";
-import TopRightControls from "@/components/TopRightControls";
+import { Moon, Sun, Star, Home } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,6 +15,7 @@ interface FavoriteItem {
 }
 
 const Favorites = () => {
+  const { theme, toggleTheme } = useTheme();
   const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | undefined>(undefined);
@@ -92,7 +93,13 @@ const Favorites = () => {
 
   return (
     <div className="page-container">
-      <TopRightControls />
+      <button
+        onClick={toggleTheme}
+        className="theme-toggle"
+        aria-label="Toggle theme"
+      >
+        {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
+      </button>
 
       <main>
         <h1 className="header">My Favorites</h1>
