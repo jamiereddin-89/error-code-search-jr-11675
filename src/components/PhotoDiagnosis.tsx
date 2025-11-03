@@ -20,20 +20,9 @@ export const PhotoDiagnosis = () => {
   const [analysis, setAnalysis] = useState<string>("");
   const { toast } = useToast();
 
-  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-  const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (!ALLOWED_TYPES.includes(file.type)) {
-        toast({ title: "Invalid file type", description: "Only JPG, PNG, WEBP allowed", variant: "destructive" });
-        return;
-      }
-      if (file.size > MAX_FILE_SIZE) {
-        toast({ title: "File too large", description: "Max file size is 5MB", variant: "destructive" });
-        return;
-      }
       setSelectedFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {

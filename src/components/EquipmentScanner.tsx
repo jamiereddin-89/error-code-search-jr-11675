@@ -41,49 +41,23 @@ export const EquipmentScanner = () => {
     location: "",
     notes: "",
   });
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string>("");
-
-  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-  const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
   useEffect(() => {
     loadEquipment();
   }, []);
 
-  function formatError(err: any) {
-    try {
-      if (!err) return 'Unknown error';
-      if (typeof err === 'string') return err;
-      if (err.message) return String(err.message);
-      if (err.error) return String(err.error);
-      if (err.status) return `${err.status} ${err.statusText || ''}`;
-      return JSON.stringify(err);
-    } catch (e) {
-      return String(err);
-    }
-  }
-
   const loadEquipment = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("equipment")
-        .select("*")
-        .order("created_at", { ascending: false });
+    const { data, error } = await supabase
+      .from("equipment")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-      if (error) {
-        console.error("Error loading equipment:", error);
-        toast({ title: "Error loading equipment", description: formatError(error), variant: "destructive" });
-        setEquipment([]);
-        return;
-      }
-
-      setEquipment(data || []);
-    } catch (err: any) {
-      console.error("Error loading equipment (exception):", err);
-      toast({ title: "Error loading equipment", description: formatError(err), variant: "destructive" });
-      setEquipment([]);
+    if (error) {
+      console.error("Error loading equipment:", error);
+      return;
     }
+
+    setEquipment(data || []);
   };
 
   const handleSearch = async () => {
@@ -128,57 +102,32 @@ export const EquipmentScanner = () => {
       return;
     }
 
-    let storagePath = null;
+    const { error } = await supabase.from("equipment").insert({
+      user_id: user.id,
+      ...formData,
+    });
 
-    try {
-      if (selectedImage) {
-        if (!ALLOWED_TYPES.includes(selectedImage.type)) {
-          toast({ title: "Invalid file type", description: "Only JPG, PNG, WEBP allowed", variant: "destructive" });
-          return;
-        }
-        if (selectedImage.size > MAX_FILE_SIZE) {
-          toast({ title: "File too large", description: "Max file size is 5MB", variant: "destructive" });
-          return;
-        }
-
-        const fileName = `${user.id}/${Date.now()}_${selectedImage.name}`;
-        const { error: uploadError } = await supabase.storage.from("equipment-photos").upload(fileName, selectedImage);
-        if (uploadError) throw uploadError;
-        storagePath = fileName;
-      }
-
-      const { error } = await supabase.from("equipment").insert({
-        user_id: user.id,
-        ...formData,
-        image_path: storagePath,
+    if (error) {
+      toast({
+        title: "Error adding equipment",
+        description: error.message,
+        variant: "destructive",
       });
-
-      if (error) {
-        toast({
-          title: "Error adding equipment",
-          description: error.message,
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Equipment added",
-          description: "Equipment has been registered successfully",
-        });
-        setFormData({
-          qr_code: "",
-          system_name: "",
-          model: "",
-          serial_number: "",
-          installation_date: "",
-          location: "",
-          notes: "",
-        });
-        setSelectedImage(null);
-        setPreview("");
-        loadEquipment();
-      }
-    } catch (err: any) {
-      toast({ title: "Upload failed", description: err.message || String(err), variant: "destructive" });
+    } else {
+      toast({
+        title: "Equipment added",
+        description: "Equipment has been registered successfully",
+      });
+      setFormData({
+        qr_code: "",
+        system_name: "",
+        model: "",
+        serial_number: "",
+        installation_date: "",
+        location: "",
+        notes: "",
+      });
+      loadEquipment();
     }
   };
 
@@ -271,33 +220,6 @@ export const EquipmentScanner = () => {
                 }
               />
             </div>
-          </div>
-
-          <div>
-            <Label>Upload Image (optional)</Label>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={() => document.getElementById("equip-photo-input")?.click()}>
-                <Plus className="h-4 w-4 mr-2" />
-                Select Image
-              </Button>
-              <input
-                id="equip-photo-input"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  if (f) {
-                    setSelectedImage(f);
-                    const reader = new FileReader();
-                    reader.onloadend = () => setPreview(reader.result as string);
-                    reader.readAsDataURL(f);
-                  }
-                }}
-              />
-              {selectedImage && <span className="text-sm">{selectedImage.name}</span>}
-            </div>
-            {preview && <img src={preview} className="mt-2 max-h-40 rounded" />}
           </div>
 
           <div className="grid grid-cols-2 gap-4">

@@ -51,7 +51,7 @@ export default function AdminAppLogs() {
       <div className="w-full max-w-xl space-y-4">
         <div className="flex items-center gap-2">
           <label className="text-sm">Log importance</label>
-          <select className="home-button bg-[hsl(var(--input))] text-[hsl(var(--foreground))]" value={level} onChange={e=>setLevel(e.target.value as any)}>
+          <select className="home-button" value={level} onChange={e=>setLevel(e.target.value as any)}>
             <option>All</option>
             {LEVELS.map(l => <option key={l}>{l}</option>)}
           </select>
@@ -65,7 +65,7 @@ export default function AdminAppLogs() {
               <button className="home-button" onClick={()=>download(filteredText, `logs_filtered_${Date.now()}.txt`)} aria-label="Download filtered logs"><FileDown className="inline mr-2"/>Export</button>
             </div>
           </div>
-          <textarea className="w-full h-56 p-3 border rounded bg-[hsl(var(--input))] text-[hsl(var(--foreground))]" readOnly value={filteredText} />
+          <textarea className="w-full h-56 p-3 border rounded" readOnly value={filteredText} />
         </div>
 
         <div className="space-y-2">
@@ -76,7 +76,7 @@ export default function AdminAppLogs() {
               <button className="home-button" onClick={()=>download(allLogsText, `logs_all_${Date.now()}.txt`)} aria-label="Download all logs"><FileDown className="inline mr-2"/>Export</button>
             </div>
           </div>
-          <textarea className="w-full h-56 p-3 border rounded bg-[hsl(var(--input))] text-[hsl(var(--foreground))]" readOnly value={allLogsText} />
+          <textarea className="w-full h-56 p-3 border rounded" readOnly value={allLogsText} />
         </div>
       </div>
     </div>

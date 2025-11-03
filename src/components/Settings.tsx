@@ -43,7 +43,7 @@ export const Settings = () => {
           <SettingsIcon className="h-5 w-5" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>
@@ -106,35 +106,32 @@ export const Settings = () => {
                 <p className="text-sm text-muted-foreground">
                   A comprehensive diagnostic tool for heat pump technicians. Search
                   and troubleshoot error codes across multiple manufacturers
-                  including Joule, Panasonic, Hitachi, LG, Grant, Itec and more.
+                  including Joule, Panasonic, Hitachi, LG, Grant, and more.
                 </p>
                 <p className="text-sm text-muted-foreground">
                   Features include AI-assisted diagnosis, service history tracking,
-                  cost estimation, equipment scanning with photo uploads, and
-                  offline mode for field work. Create and manage Brands, Models,
-                  Categories and Tags from the Admin dashboard to keep your
-                  catalogue up to date. Access troubleshooting guides, related
-                  error codes, and contextual AI help all in one place.
+                  cost estimation, equipment scanning, and offline mode for field
+                  work. Access troubleshooting guides, related error codes, and
+                  video tutorials all in one place.
                 </p>
               </div>
             </div>
             <Separator />
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="font-medium">Created by:</span>
+            <div className="space-y-2 text-sm">
+              <p>
+                <span className="font-medium">Created by:</span>{" "}
                 <a
                   href="https://jayreddin.github.io"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline font-semibold"
+                  className="text-primary hover:underline"
                 >
                   Jamie Reddin
                 </a>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="font-medium">Version:</span>
-                <span className="font-semibold">1.6.2</span>
-              </div>
+              </p>
+              <p>
+                <span className="font-medium">Version:</span> 1.5.0
+              </p>
             </div>
           </TabsContent>
         </Tabs>

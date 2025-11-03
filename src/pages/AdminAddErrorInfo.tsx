@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Home, ArrowLeft, FilePlus2, Save } from "lucide-react";
 import TopRightControls from "@/components/TopRightControls";
-import { BrandSelect, ModelSelect, CategorySelect, TagInput } from "@/components/admin/Selectors";
 
 interface ErrorInfo {
   id: string;
@@ -16,17 +15,6 @@ interface ErrorInfo {
 
 function readInfos(): ErrorInfo[] { try { const r = localStorage.getItem("jr_error_metadata"); return r? JSON.parse(r): []; } catch { return []; } }
 function writeInfos(s: ErrorInfo[]) { localStorage.setItem("jr_error_metadata", JSON.stringify(s)); }
-
-function BrandModelCategoryForm({ form, setForm }: any) {
-  return (
-    <div className="grid grid-cols-1 gap-2">
-      <BrandSelect value={form.brand||null} onChange={(val)=>setForm({...form, brand: val||undefined, model: undefined})} />
-      <ModelSelect value={form.model||null} brandId={form.brand||null} onChange={(val)=>setForm({...form, model: val||undefined})} />
-      <CategorySelect value={form.category||null} onChange={(val)=>setForm({...form, category: val||undefined})} />
-      <TagInput value={[] } onChange={(tags)=>setForm({...form, tags})} />
-    </div>
-  );
-}
 
 export default function AdminAddErrorInfo() {
   const [list, setList] = useState<ErrorInfo[]>(readInfos());
@@ -63,7 +51,9 @@ export default function AdminAddErrorInfo() {
       <div className="w-full max-w-xl grid gap-4">
         <div className="border rounded p-3 space-y-2">
           <h2 className="font-semibold">New Error Info</h2>
-          <BrandModelCategoryForm form={form} setForm={setForm} />
+          <input className="home-button w-full" placeholder="Brand" value={form.brand||""} onChange={e=>setForm({...form, brand:e.target.value})} />
+          <input className="home-button w-full" placeholder="Model" value={form.model||""} onChange={e=>setForm({...form, model:e.target.value})} />
+          <input className="home-button w-full" placeholder="Category" value={form.category||""} onChange={e=>setForm({...form, category:e.target.value})} />
           <input className="home-button w-full" placeholder="Error Code" value={form.error_code||""} onChange={e=>setForm({...form, error_code:e.target.value})} />
           <textarea className="w-full h-24 p-3 border rounded" placeholder="Meaning" value={form.meaning||""} onChange={e=>setForm({...form, meaning:e.target.value})} />
           <textarea className="w-full h-24 p-3 border rounded" placeholder="Solution" value={form.solution||""} onChange={e=>setForm({...form, solution:e.target.value})} />
