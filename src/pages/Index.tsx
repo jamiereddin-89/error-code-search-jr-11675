@@ -22,15 +22,35 @@ const Index = () => {
       try {
         const { data, error } = await supabase.from('models').select('id,name,model_number,brand_id,brands(name)').order('name');
         if (error) throw error;
-        const names = (data||[]).map((m:any) => `${m.brands?.name||''} ${m.name}`.trim());
-        setDynamicButtons([...new Set(names.concat(extraButtons))]);
+        const rows = data || [];
+        const map = new Map<string, string[]>();
+        for (const r of rows) {
+          const brand = r.brands?.name || '';
+          const model = r.name || '';
+          if (!map.has(brand)) map.set(brand, []);
+          map.get(brand)!.push(model);
+        }
+        const grouped: { brand: string; models: string[] }[] = [];
+        for (const [brand, models] of map.entries()) grouped.push({ brand, models });
+        // ensure extras at end
+        setDynamicButtons(grouped.flatMap(g => g.models.map(m => `${g.brand}|||${m}`)).concat(extraButtons.map(e=>`|||${e}`)));
       } catch (err) {
         console.error('Error loading dynamic buttons', err);
-        setDynamicButtons(extraButtons);
+        setDynamicButtons(extraButtons.map(e=>`|||${e}`));
       }
     };
     load();
   }, []);
+
+  function renderButtonLabel(item: string, index: number, prevBrand?: string) {
+    // item format: 'Brand|||Model' or '|||Extra'
+    const parts = item.split('|||');
+    const brand = parts[0];
+    const model = parts[1];
+    if (!brand) return model;
+    // if previous item has same brand, omit brand
+    return brand + (prevBrand === brand ? ` ${model}` : ` ${model}`);
+  }
 
   return (
     <div className="page-container">
