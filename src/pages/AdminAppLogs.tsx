@@ -76,7 +76,7 @@ export default function AdminAppLogs() {
               <button className="home-button" onClick={()=>download(allLogsText, `logs_all_${Date.now()}.txt`)} aria-label="Download all logs"><FileDown className="inline mr-2"/>Export</button>
             </div>
           </div>
-          <textarea className="w-full h-56 p-3 border rounded" readOnly value={allLogsText} />
+          <textarea className="w-full h-56 p-3 border rounded bg-[hsl(var(--input))] text-[hsl(var(--foreground))]" readOnly value={allLogsText} />
         </div>
       </div>
     </div>
