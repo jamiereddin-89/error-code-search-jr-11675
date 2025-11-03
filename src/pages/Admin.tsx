@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Home, Plus, Edit, Trash2, Users, BarChart3, Wrench, ScrollText, FilePlus2 } from "lucide-react";
-import TopRightControls from "@/components/TopRightControls";
+import { Home, Plus, Edit, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Button } from "@/components/ui/button";
@@ -68,6 +67,7 @@ export default function Admin() {
     }
   }, [isAdmin]);
 
+  // Handle edit from URL parameters
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const editCode = params.get('edit');
@@ -80,6 +80,7 @@ export default function Admin() {
       if (codeToEdit) {
         setEditingCode(codeToEdit);
         setIsDialogOpen(true);
+        // Clear URL parameters
         window.history.replaceState({}, '', '/admin');
       }
     }
@@ -196,44 +197,19 @@ export default function Admin() {
 
   return (
     <div className="page-container">
-      <TopRightControls />
-      <header className="flex items-center justify-between mb-8 w-full max-w-xl">
+      <header className="flex items-center justify-between mb-8">
         <Link to="/">
-          <Button variant="ghost" size="icon" aria-label="Go home">
+          <Button variant="ghost" size="icon">
             <Home size={20} />
           </Button>
         </Link>
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-        <div className="w-10" />
-      </header>
-
-      <div className="button-container">
-        <Link to="/admin/users" className="nav-button flex items-center justify-center gap-2">
-          <Users size={20} />
-          Users
-        </Link>
-        <Link to="/admin/analytics" className="nav-button flex items-center justify-center gap-2">
-          <BarChart3 size={20} />
-          Analytics
-        </Link>
-        <Link to="/admin/fix-steps" className="nav-button flex items-center justify-center gap-2">
-          <Wrench size={20} />
-          Fix Steps
-        </Link>
-        <Link to="/admin/app-logs" className="nav-button flex items-center justify-center gap-2">
-          <ScrollText size={20} />
-          App Logs
-        </Link>
-        <Link to="/admin/add-error-info" className="nav-button flex items-center justify-center gap-2">
-          <FilePlus2 size={20} />
-          Add Error Info
-        </Link>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <button className="nav-button flex items-center justify-center gap-2" onClick={() => setEditingCode(null)}>
-              <Plus size={20} />
+            <Button onClick={() => setEditingCode(null)}>
+              <Plus className="mr-2 h-4 w-4" />
               Add Error Code
-            </button>
+            </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
@@ -248,9 +224,9 @@ export default function Admin() {
             />
           </DialogContent>
         </Dialog>
-      </div>
+      </header>
 
-      <div className="w-full max-w-xl mt-8 grid gap-4">
+      <div className="grid gap-4">
         {errorCodes.map((code) => (
           <div
             key={code.id}
@@ -278,7 +254,6 @@ export default function Admin() {
                   setEditingCode(code);
                   setIsDialogOpen(true);
                 }}
-                aria-label="Edit error code"
               >
                 <Edit className="h-4 w-4" />
               </Button>
@@ -286,7 +261,6 @@ export default function Admin() {
                 variant="ghost"
                 size="icon"
                 onClick={() => handleDelete(code.id)}
-                aria-label="Delete error code"
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
