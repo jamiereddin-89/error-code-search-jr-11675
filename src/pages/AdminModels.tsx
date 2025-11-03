@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Home, ArrowLeft, Plus, Edit, Trash2 } from "lucide-react";
+import { Home, ArrowLeft, Plus, Edit, Trash2, Eye } from "lucide-react";
 import TopRightControls from "@/components/TopRightControls";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
