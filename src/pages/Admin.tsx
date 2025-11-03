@@ -182,8 +182,9 @@ export default function Admin() {
   async function handleDelete(id: string) {
     if (!confirm("Are you sure you want to delete this error code?")) return;
 
+    const table = errorCodesTable || 'error_codes_db';
     const { error } = await (supabase as any)
-      .from("error_codes_db" as any)
+      .from(table as any)
       .delete()
       .eq("id", id);
 
