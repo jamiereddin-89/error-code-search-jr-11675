@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { useUserRole } from "@/hooks/useUserRole";
 import { LogIn, LogOut, UserPlus } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -18,6 +19,7 @@ export function AuthButton() {
   const [user, setUser] = useState<any>(null);
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
+  const { isAdmin } = useUserRole();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -32,6 +34,19 @@ export function AuthButton() {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  function formatError(err: any) {
+    try {
+      if (!err) return 'Unknown error';
+      if (typeof err === 'string') return err;
+      if (err.message) return String(err.message);
+      if (err.error) return String(err.error);
+      if (err.status) return `${err.status} ${err.statusText || ''}`;
+      return JSON.stringify(err);
+    } catch (e) {
+      return String(err);
+    }
+  }
 
   async function handleSignUp(email: string, password: string, fullName: string) {
     try {
@@ -53,9 +68,10 @@ export function AuthButton() {
       });
       setIsOpen(false);
     } catch (error: any) {
+      console.error('SignUp error', error);
       toast({
         title: "Error signing up",
-        description: error.message,
+        description: formatError(error),
         variant: "destructive",
       });
     }
@@ -75,9 +91,10 @@ export function AuthButton() {
       });
       setIsOpen(false);
     } catch (error: any) {
+      console.error('SignIn error', error);
       toast({
         title: "Error signing in",
-        description: error.message,
+        description: formatError(error),
         variant: "destructive",
       });
     }
@@ -92,9 +109,10 @@ export function AuthButton() {
         title: "Signed out successfully!",
       });
     } catch (error: any) {
+      console.error('SignOut error', error);
       toast({
         title: "Error signing out",
-        description: error.message,
+        description: formatError(error),
         variant: "destructive",
       });
     }
@@ -104,7 +122,7 @@ export function AuthButton() {
     return (
       <Button variant="outline" onClick={handleSignOut}>
         <LogOut className="mr-2 h-4 w-4" />
-        Sign Out
+        {isAdmin ? <span className="text-yellow-400 font-semibold">ADMIN</span> : "Sign Out"}
       </Button>
     );
   }
