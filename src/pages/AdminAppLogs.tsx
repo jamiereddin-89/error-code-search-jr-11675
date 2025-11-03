@@ -51,7 +51,7 @@ export default function AdminAppLogs() {
       <div className="w-full max-w-xl space-y-4">
         <div className="flex items-center gap-2">
           <label className="text-sm">Log importance</label>
-          <select className="home-button" value={level} onChange={e=>setLevel(e.target.value as any)}>
+          <select className="home-button bg-[hsl(var(--input))] text-[hsl(var(--foreground))]" value={level} onChange={e=>setLevel(e.target.value as any)}>
             <option>All</option>
             {LEVELS.map(l => <option key={l}>{l}</option>)}
           </select>
