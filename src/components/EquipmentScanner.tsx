@@ -51,18 +51,39 @@ export const EquipmentScanner = () => {
     loadEquipment();
   }, []);
 
-  const loadEquipment = async () => {
-    const { data, error } = await supabase
-      .from("equipment")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error loading equipment:", error);
-      return;
+  function formatError(err: any) {
+    try {
+      if (!err) return 'Unknown error';
+      if (typeof err === 'string') return err;
+      if (err.message) return String(err.message);
+      if (err.error) return String(err.error);
+      if (err.status) return `${err.status} ${err.statusText || ''}`;
+      return JSON.stringify(err);
+    } catch (e) {
+      return String(err);
     }
+  }
 
-    setEquipment(data || []);
+  const loadEquipment = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("equipment")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error loading equipment:", error);
+        toast({ title: "Error loading equipment", description: formatError(error), variant: "destructive" });
+        setEquipment([]);
+        return;
+      }
+
+      setEquipment(data || []);
+    } catch (err: any) {
+      console.error("Error loading equipment (exception):", err);
+      toast({ title: "Error loading equipment", description: formatError(err), variant: "destructive" });
+      setEquipment([]);
+    }
   };
 
   const handleSearch = async () => {
