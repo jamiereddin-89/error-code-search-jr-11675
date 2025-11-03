@@ -76,15 +76,26 @@ const Index = () => {
             My Favorites
           </Link>
 
-          {dynamicButtons.map((name, index) => (
-            <Link
-              key={index}
-              to={`/${name.toLowerCase().replace(/\s+/g, "-")}`}
-              className="nav-button"
-            >
-              {name}
-            </Link>
-          ))}
+          {dynamicButtons.map((item, index) => {
+            const parts = item.split('|||');
+            const brand = parts[0];
+            const model = parts[1];
+            let label = '';
+            if (!brand) {
+              label = model;
+            } else {
+              // determine if previous has same brand
+              const prev = dynamicButtons[index-1];
+              const prevBrand = prev ? prev.split('|||')[0] : null;
+              if (prevBrand === brand) label = model; else label = `${brand} ${model}`;
+            }
+            const slug = (brand ? (brand + ' ' + model) : model).toLowerCase().replace(/\s+/g, '-');
+            return (
+              <Link key={index} to={`/${slug}`} className="nav-button">
+                {label}
+              </Link>
+            );
+          })}
 
           {isAdmin && (
             <Link
