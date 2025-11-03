@@ -35,6 +35,19 @@ export function AuthButton() {
     return () => subscription.unsubscribe();
   }, []);
 
+  function formatError(err: any) {
+    try {
+      if (!err) return 'Unknown error';
+      if (typeof err === 'string') return err;
+      if (err.message) return String(err.message);
+      if (err.error) return String(err.error);
+      if (err.status) return `${err.status} ${err.statusText || ''}`;
+      return JSON.stringify(err);
+    } catch (e) {
+      return String(err);
+    }
+  }
+
   async function handleSignUp(email: string, password: string, fullName: string) {
     try {
       const { error } = await supabase.auth.signUp({
@@ -55,9 +68,10 @@ export function AuthButton() {
       });
       setIsOpen(false);
     } catch (error: any) {
+      console.error('SignUp error', error);
       toast({
         title: "Error signing up",
-        description: error.message,
+        description: formatError(error),
         variant: "destructive",
       });
     }
