@@ -42,7 +42,32 @@ export default function AdminModels(){
       if(error) return toast({ title: 'Error creating model', description: error.message, variant: 'destructive' });
       toast({ title: 'Model created' });
       try { (await import('@/lib/tracking')).log('Info', `Model created: ${editing.name.trim()}`, { id: data?.id, brand_id: data?.brand_id }); } catch(e){}
+
+      // Create a placeholder error_codes_db record so admins can immediately add codes for this model
+      try {
+        const brandName = brands.find(b => b.id === (data?.brand_id))?.name || '';
+        const modelName = data?.name || editing.name || '';
+        const slugBase = `${brandName} ${modelName}`.toLowerCase().replace(/\s+/g, '-');
+        const placeholder = {
+          code: 'TBD',
+          system_name: slugBase,
+          meaning: `Placeholder for ${brandName} ${modelName}`,
+          solution: '',
+        };
+
+        const { error: codeError } = await supabase.from('error_codes_db').insert([placeholder]);
+        if (codeError) {
+          console.debug('Failed to create placeholder error code:', codeError);
+        }
+
+        // Open the admin editor focused on this placeholder so admin can add full codes
+        window.location.href = `/admin?edit=${encodeURIComponent('TBD')}&system=${encodeURIComponent(slugBase)}`;
+        return;
+      } catch (e) {
+        console.debug('Error creating placeholder error code', e);
+      }
     }
+
     setEditing(null); await load();
   }
 
