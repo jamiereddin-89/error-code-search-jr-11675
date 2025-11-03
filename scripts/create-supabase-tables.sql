@@ -90,3 +90,24 @@ CREATE TABLE IF NOT EXISTS public.service_history (
   notes text,
   created_at timestamptz DEFAULT now()
 );
+
+-- App logs: persisted application logs
+CREATE TABLE IF NOT EXISTS public.app_logs (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  level text NOT NULL,
+  message text NOT NULL,
+  ts bigint NOT NULL,
+  stack text,
+  meta jsonb,
+  created_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE public.app_logs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can insert logs"
+  ON public.app_logs FOR INSERT
+  WITH CHECK (true);
+
+CREATE POLICY "Anyone can view logs"
+  ON public.app_logs FOR SELECT
+  USING (true);
