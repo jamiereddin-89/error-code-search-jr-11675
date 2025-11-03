@@ -109,9 +109,10 @@ export function AuthButton() {
         title: "Signed out successfully!",
       });
     } catch (error: any) {
+      console.error('SignOut error', error);
       toast({
         title: "Error signing out",
-        description: error.message,
+        description: formatError(error),
         variant: "destructive",
       });
     }
