@@ -229,6 +229,22 @@ export default function Admin() {
           <FilePlus2 size={20} />
           Add Error Info
         </Link>
+        <Link to="/admin/brands" className="nav-button flex items-center justify-center gap-2">
+          <Plus size={20} />
+          Brands
+        </Link>
+        <Link to="/admin/models" className="nav-button flex items-center justify-center gap-2">
+          <Plus size={20} />
+          Models
+        </Link>
+        <Link to="/admin/categories" className="nav-button flex items-center justify-center gap-2">
+          <Plus size={20} />
+          Categories
+        </Link>
+        <Link to="/admin/tags" className="nav-button flex items-center justify-center gap-2">
+          <Plus size={20} />
+          Tags
+        </Link>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <button className="nav-button flex items-center justify-center gap-2" onClick={() => setEditingCode(null)}>
