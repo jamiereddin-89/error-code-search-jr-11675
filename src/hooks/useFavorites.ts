@@ -12,19 +12,6 @@ export function useFavorites(userId: string | undefined) {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  function formatError(err: any) {
-    try {
-      if (!err) return 'Unknown error';
-      if (typeof err === 'string') return err;
-      if (err.message) return String(err.message);
-      if (err.error) return String(err.error);
-      if (err.status) return `${err.status} ${err.statusText || ''}`;
-      return JSON.stringify(err);
-    } catch (e) {
-      return String(err);
-    }
-  }
-
   useEffect(() => {
     if (!userId) {
       setLoading(false);
@@ -51,7 +38,6 @@ export function useFavorites(userId: string | undefined) {
       setFavorites(favSet);
     } catch (error) {
       console.error("Error loading favorites:", error);
-      toast({ title: "Error loading favorites", description: formatError(error), variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -91,7 +77,7 @@ export function useFavorites(userId: string | undefined) {
           title: "Removed from favorites",
         });
       } else {
-        const { data, error } = await (supabase as any).from("favorites").insert({
+        const { error } = await (supabase as any).from("favorites").insert({
           user_id: userId,
           system_name: systemName,
           error_code: errorCode,
@@ -99,12 +85,7 @@ export function useFavorites(userId: string | undefined) {
 
         if (error) throw error;
 
-        // ensure we create a fresh set instance
-        setFavorites((prev) => {
-          const s = new Set(prev);
-          s.add(key);
-          return s;
-        });
+        setFavorites((prev) => new Set(prev).add(key));
 
         toast({
           title: "Added to favorites",
@@ -113,8 +94,8 @@ export function useFavorites(userId: string | undefined) {
     } catch (error) {
       console.error("Error toggling favorite:", error);
       toast({
-        title: "Error toggling favorite",
-        description: formatError(error),
+        title: "Error",
+        description: "Failed to update favorite",
         variant: "destructive",
       });
     }

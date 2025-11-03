@@ -73,15 +73,6 @@
   body {
     @apply bg-background text-foreground transition-colors duration-300;
   }
-
-  /* Hide scrollbars globally */
-  *::-webkit-scrollbar {
-    display: none;
-  }
-  * {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-  }
 }
 
 .nav-button {
@@ -103,36 +94,13 @@
 }
 
 .home-button {
-  @apply px-6 py-2 border border-[hsl(var(--button-border))] rounded-lg
+  @apply px-6 py-2 border border-[hsl(var(--button-border))] rounded-lg 
          transition-all duration-300 hover:scale-105 hover:border-primary
          focus:outline-none focus:ring-2 focus:ring-primary;
-  /* background and text follow design tokens */
-  background: hsl(var(--input));
-  color: hsl(var(--foreground));
-}
-
-/* Ensure inputs, selects, textareas and buttons use theme tokens */
-input, textarea, select {
-  @apply rounded border px-3 py-2;
-  background: hsl(var(--input));
-  color: hsl(var(--foreground));
-  border-color: hsl(var(--border));
-}
-
-textarea::placeholder, input::placeholder {
-  color: hsl(var(--muted-foreground));
-}
-
-/* Nav button background/text */
-.nav-button {
-  background: hsl(var(--card));
-  color: hsl(var(--card-foreground));
 }
 
 .theme-toggle {
   @apply fixed top-4 right-4 p-2 rounded-full border border-[hsl(var(--button-border))]
          transition-all duration-300 hover:scale-110 hover:border-primary
          focus:outline-none focus:ring-2 focus:ring-primary;
-  background: hsl(var(--card));
-  color: hsl(var(--card-foreground));
 }

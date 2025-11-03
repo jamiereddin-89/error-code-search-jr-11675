@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Home, ArrowLeft, Wrench, Plus, Trash2 } from "lucide-react";
 import TopRightControls from "@/components/TopRightControls";
-import { BrandSelect, ModelSelect, TagInput } from "@/components/admin/Selectors";
 
 interface FixStep {
   id: string;
@@ -58,16 +57,14 @@ export default function AdminFixSteps() {
       <div className="w-full max-w-xl grid gap-4">
         <div className="border rounded p-3 space-y-2">
           <h2 className="font-semibold">New Fix Step</h2>
-          <div className="grid gap-2">
-            <BrandSelect value={draft.brand||null} onChange={(val)=>setDraft({...draft, brand: val||undefined, model: undefined})} />
-            <ModelSelect value={draft.model||null} brandId={draft.brand||null} onChange={(val)=>setDraft({...draft, model: val||undefined})} />
-            <input className="home-button w-full" placeholder="Error Code" value={draft.error_code||""} onChange={e=>setDraft({...draft, error_code:e.target.value})} />
-            <input className="home-button w-full" placeholder="Title" value={draft.title||""} onChange={e=>setDraft({...draft, title:e.target.value})} />
-            <textarea className="w-full h-28 p-3 border rounded" placeholder="Step-by-step guide..." value={draft.content||""} onChange={e=>setDraft({...draft, content:e.target.value})} />
-            <TagInput value={draft.tags||[]} onChange={(tags)=>setDraft({...draft, tags})} />
-            <input className="home-button w-full" placeholder="Media URLs (comma separated)" value={(draft.mediaUrls||[]).join(", ")} onChange={e=>setDraft({...draft, mediaUrls:e.target.value.split(",").map(t=>t.trim()).filter(Boolean)})} />
-            <button className="home-button" onClick={saveDraft} aria-label="Save fix step"><Plus className="inline mr-2"/>Save</button>
-          </div>
+          <input className="home-button w-full" placeholder="Brand" value={draft.brand||""} onChange={e=>setDraft({...draft, brand:e.target.value})} />
+          <input className="home-button w-full" placeholder="Model" value={draft.model||""} onChange={e=>setDraft({...draft, model:e.target.value})} />
+          <input className="home-button w-full" placeholder="Error Code" value={draft.error_code||""} onChange={e=>setDraft({...draft, error_code:e.target.value})} />
+          <input className="home-button w-full" placeholder="Title" value={draft.title||""} onChange={e=>setDraft({...draft, title:e.target.value})} />
+          <textarea className="w-full h-28 p-3 border rounded" placeholder="Step-by-step guide..." value={draft.content||""} onChange={e=>setDraft({...draft, content:e.target.value})} />
+          <input className="home-button w-full" placeholder="Tags (comma separated)" value={(draft.tags||[]).join(", ")} onChange={e=>setDraft({...draft, tags:e.target.value.split(",").map(t=>t.trim()).filter(Boolean)})} />
+          <input className="home-button w-full" placeholder="Media URLs (comma separated)" value={(draft.mediaUrls||[]).join(", ")} onChange={e=>setDraft({...draft, mediaUrls:e.target.value.split(",").map(t=>t.trim()).filter(Boolean)})} />
+          <button className="home-button" onClick={saveDraft} aria-label="Save fix step"><Plus className="inline mr-2"/>Save</button>
         </div>
 
         <div className="border rounded p-3 space-y-2">

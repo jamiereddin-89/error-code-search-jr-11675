@@ -14,8 +14,6 @@ export function useErrorCodes(routeName: string) {
   useEffect(() => {
     let mounted = true;
 
-    const modules = import.meta.glob('../data/error-codes/*.json');
-
     async function loadErrorCodes() {
       if (!routeName) {
         setLoading(false);
@@ -25,21 +23,16 @@ export function useErrorCodes(routeName: string) {
       try {
         setLoading(true);
         setError(null);
-        const key = `../data/error-codes/${routeName}.json`;
-        const loader = (modules as Record<string, () => Promise<any>>)[key];
-        if (!loader) {
-          throw new Error(`Could not find local error codes file for route: ${routeName}`);
-        }
-        const response = await loader();
-
+        const response = await import(`../data/error-codes/${routeName}.json`);
+        
         if (mounted) {
           setErrorCodes(response.default || {});
           setError(null);
         }
-      } catch (err: any) {
+      } catch (err) {
         console.error("Error loading error codes:", err);
         if (mounted) {
-          setError(err?.message ? `Failed to load error codes: ${err.message}` : "Failed to load error codes");
+          setError("Failed to load error codes");
           setErrorCodes({});
         }
       } finally {

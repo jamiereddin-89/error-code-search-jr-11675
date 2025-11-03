@@ -91,25 +91,11 @@ export interface AppLogEntry {
   meta?: Record<string, any>;
 }
 
-import { supabase } from "@/integrations/supabase/client";
-
 export function log(level: AppLogLevel, message: string, meta?: Record<string, any>) {
   const entry: AppLogEntry = { id: crypto.randomUUID(), level, message, ts: Date.now(), meta };
   const logs = readArray<AppLogEntry>(LS_KEYS.logs);
   logs.push(entry);
   writeArray(LS_KEYS.logs, logs);
-
-  // Persist to Supabase (best-effort, non-blocking)
-  try {
-    supabase.from('app_logs').insert([{ level, message, ts: entry.ts, meta }])
-      .then(({ error }) => {
-        if (error) console.debug('Failed to persist app log to supabase:', error.message || error);
-      })
-      .catch((e) => console.debug('Failed to persist app log to supabase (catch):', e));
-  } catch (e) {
-    // ignore errors in logging persistence
-    console.debug('Could not persist log to supabase', e);
-  }
 }
 
 export function getLogs(level?: AppLogLevel) {
