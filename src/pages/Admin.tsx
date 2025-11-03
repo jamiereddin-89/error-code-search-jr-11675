@@ -63,9 +63,11 @@ export default function Admin() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
+  const [errorCodesTable, setErrorCodesTable] = useState<string | null>(null);
+
   useEffect(() => {
     if (isAdmin) {
-      loadErrorCodes();
+      resolveErrorCodesTable().then(loadErrorCodes);
     }
   }, [isAdmin]);
 
@@ -73,7 +75,7 @@ export default function Admin() {
     const params = new URLSearchParams(window.location.search);
     const editCode = params.get('edit');
     const systemName = params.get('system');
-    
+
     if (editCode && systemName && errorCodes.length > 0) {
       const codeToEdit = errorCodes.find(
         c => c.code === editCode && c.system_name === systemName
@@ -86,9 +88,37 @@ export default function Admin() {
     }
   }, [errorCodes]);
 
+  async function resolveErrorCodesTable() {
+    if (errorCodesTable) return errorCodesTable;
+    try {
+      const { data, error } = await (supabase as any).from('error_codes_db' as any).select('id').limit(1);
+      if (!error) {
+        setErrorCodesTable('error_codes_db');
+        return 'error_codes_db';
+      }
+      // if error message suggests missing table, fallback
+      if (error && String(error.message || '').toLowerCase().includes('could not find')) {
+        const { data: d2, error: e2 } = await (supabase as any).from('error_codes' as any).select('id').limit(1);
+        if (!e2) {
+          setErrorCodesTable('error_codes');
+          toast({ title: 'Using fallback table', description: "Using 'error_codes' as 'error_codes_db' not found", variant: 'warning' });
+          return 'error_codes';
+        }
+      }
+      // default to error_codes_db even if error; let queries handle it
+      setErrorCodesTable('error_codes_db');
+      return 'error_codes_db';
+    } catch (err: any) {
+      setErrorCodesTable('error_codes');
+      toast({ title: 'Error detecting error codes table', description: String(err?.message || err), variant: 'destructive' });
+      return 'error_codes';
+    }
+  }
+
   async function loadErrorCodes() {
+    const table = (errorCodesTable) || 'error_codes_db';
     const { data, error } = await (supabase as any)
-      .from("error_codes_db" as any)
+      .from(table as any)
       .select("*")
       .order("system_name", { ascending: true })
       .order("code", { ascending: true });
@@ -96,7 +126,7 @@ export default function Admin() {
     if (error) {
       toast({
         title: "Error loading codes",
-        description: error.message,
+        description: String(error.message || error),
         variant: "destructive",
       });
     } else {
