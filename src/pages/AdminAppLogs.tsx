@@ -65,7 +65,7 @@ export default function AdminAppLogs() {
               <button className="home-button" onClick={()=>download(filteredText, `logs_filtered_${Date.now()}.txt`)} aria-label="Download filtered logs"><FileDown className="inline mr-2"/>Export</button>
             </div>
           </div>
-          <textarea className="w-full h-56 p-3 border rounded" readOnly value={filteredText} />
+          <textarea className="w-full h-56 p-3 border rounded bg-[hsl(var(--input))] text-[hsl(var(--foreground))]" readOnly value={filteredText} />
         </div>
 
         <div className="space-y-2">
