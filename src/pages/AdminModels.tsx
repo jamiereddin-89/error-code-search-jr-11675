@@ -110,6 +110,9 @@ export default function AdminModels(){
                 <Button variant="ghost" size="icon" onClick={()=>setEditing({ id: m.id, name: m.name, model_number: m.model_number, brand_id: m.brand_id })} aria-label="Edit">
                   <Edit className="h-4 w-4" />
                 </Button>
+                <Button variant="ghost" size="icon" onClick={()=>window.open(`/#/${( (m.brands?.name||'') + ' ' + m.name ).toLowerCase().replace(/\s+/g, '-')}`)} aria-label="Preview">
+                  <Eye className="h-4 w-4" />
+                </Button>
                 <Button variant="ghost" size="icon" onClick={()=>remove(m.id)} aria-label="Delete">
                   <Trash2 className="h-4 w-4" />
                 </Button>
