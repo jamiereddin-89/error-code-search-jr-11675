@@ -68,10 +68,12 @@ const App = () => (
             <Route path="/admin/models" element={<AdminRoute><AdminModels /></AdminRoute>} />
             <Route path="/admin/categories" element={<AdminRoute><AdminCategories /></AdminRoute>} />
             <Route path="/admin/tags" element={<AdminRoute><AdminTags /></AdminRoute>} />
+            <Route path="/admin/add-device" element={<AdminRoute><AdminAddDevice /></AdminRoute>} />
             <Route path="/pdf-files" element={<ButtonPage title="PDF Files" />} />
             {buttonRoutes.map((route, index) => (
               <Route key={index} path={route.path} element={route.element} />
             ))}
+            <Route path="/:slug" element={<ButtonSlug />} />
           </Routes>
         </HashRouter>
       </TooltipProvider>
