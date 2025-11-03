@@ -36,10 +36,12 @@ export default function AdminModels(){
       const { error } = await supabase.from('models').update(payload).eq('id', editing.id);
       if(error) return toast({ title: 'Error updating model', description: error.message, variant: 'destructive' });
       toast({ title: 'Model updated' });
+      try { (await import('@/lib/tracking')).log('Info', `Model updated: ${editing.name.trim()}`, { id: editing.id, brand_id: editing.brand_id }); } catch(e){}
     } else {
-      const { error } = await supabase.from('models').insert(payload);
+      const { data, error } = await supabase.from('models').insert(payload).select().maybeSingle();
       if(error) return toast({ title: 'Error creating model', description: error.message, variant: 'destructive' });
       toast({ title: 'Model created' });
+      try { (await import('@/lib/tracking')).log('Info', `Model created: ${editing.name.trim()}`, { id: data?.id, brand_id: data?.brand_id }); } catch(e){}
     }
     setEditing(null); await load();
   }
