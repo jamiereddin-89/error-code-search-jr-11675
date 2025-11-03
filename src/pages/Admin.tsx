@@ -149,9 +149,10 @@ export default function Admin() {
         troubleshooting_steps: formData.troubleshooting_steps || null,
       };
 
+      const table = errorCodesTable || 'error_codes_db';
       if (editingCode?.id) {
         const { error } = await (supabase as any)
-          .from("error_codes_db" as any)
+          .from(table as any)
           .update(dataToSave)
           .eq("id", editingCode.id);
 
@@ -159,7 +160,7 @@ export default function Admin() {
         toast({ title: "Error code updated successfully" });
       } else {
         const { error } = await (supabase as any)
-          .from("error_codes_db" as any)
+          .from(table as any)
           .insert([dataToSave]);
 
         if (error) throw error;
