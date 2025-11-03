@@ -29,10 +29,12 @@ export default function AdminBrands(){
       const { error } = await supabase.from('brands').update({ name: editing.name.trim() }).eq('id', editing.id);
       if(error) return toast({ title: 'Error updating brand', description: error.message, variant: 'destructive' });
       toast({ title: 'Brand updated' });
+      try { (await import('@/lib/tracking')).log('Info', `Brand updated: ${editing.name.trim()}`, { id: editing.id }); } catch(e){}
     } else {
-      const { error } = await supabase.from('brands').insert({ name: editing.name.trim() });
+      const { data, error } = await supabase.from('brands').insert({ name: editing.name.trim() }).select().maybeSingle();
       if(error) return toast({ title: 'Error creating brand', description: error.message, variant: 'destructive' });
       toast({ title: 'Brand created' });
+      try { (await import('@/lib/tracking')).log('Info', `Brand created: ${editing.name.trim()}`, { id: data?.id }); } catch(e){}
     }
     setEditing(null);
     await load();
