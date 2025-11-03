@@ -91,9 +91,10 @@ export function AuthButton() {
       });
       setIsOpen(false);
     } catch (error: any) {
+      console.error('SignIn error', error);
       toast({
         title: "Error signing in",
-        description: error.message,
+        description: formatError(error),
         variant: "destructive",
       });
     }
