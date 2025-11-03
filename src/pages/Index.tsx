@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
-import { Moon, Sun, Star, Shield } from "lucide-react";
-import { useTheme } from "@/contexts/ThemeContext";
+import { Star, Shield } from "lucide-react";
 import { useUserRole } from "@/hooks/useUserRole";
-import { AuthButton } from "@/components/AuthButton";
-import { Settings } from "@/components/Settings";
+import TopRightControls from "@/components/TopRightControls";
 import { ServiceHistory } from "@/components/ServiceHistory";
 import { EquipmentScanner } from "@/components/EquipmentScanner";
 import { TroubleshootingWizard } from "@/components/TroubleshootingWizard";
@@ -25,27 +23,16 @@ const buttonNames = [
 ];
 
 const Index = () => {
-  const { theme, toggleTheme } = useTheme();
   const { isAdmin } = useUserRole();
 
   return (
     <div className="page-container">
-      <div className="absolute top-4 right-4 flex gap-2 items-center">
-        <AuthButton />
-        <button
-          onClick={toggleTheme}
-          className="p-2 rounded-full border border-[hsl(var(--button-border))] transition-all duration-300 hover:scale-110 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary"
-          aria-label="Toggle theme"
-        >
-          {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
-        </button>
-      </div>
+      <TopRightControls />
 
       <main>
-        <h1 className="header">Error Code Search</h1>
+        <h1 className="header">JR Heat Pumps</h1>
 
         <div className="flex flex-wrap gap-2 justify-center mb-6">
-          <Settings />
           <ServiceHistory />
           <EquipmentScanner />
           <TroubleshootingWizard />
@@ -62,16 +49,6 @@ const Index = () => {
             My Favorites
           </Link>
 
-          {isAdmin && (
-            <Link
-              to="/admin"
-              className="nav-button flex items-center justify-center gap-2 bg-primary/10 border-primary"
-            >
-              <Shield size={20} />
-              Admin Dashboard
-            </Link>
-          )}
-          
           {buttonNames.map((name, index) => (
             <Link
               key={index}
@@ -81,6 +58,16 @@ const Index = () => {
               {name}
             </Link>
           ))}
+
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="nav-button flex items-center justify-center gap-2 bg-primary/10 border-primary"
+            >
+              <Shield size={20} />
+              Admin Dashboard
+            </Link>
+          )}
         </nav>
       </main>
     </div>
