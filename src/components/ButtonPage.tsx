@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import TopRightControls from "@/components/TopRightControls";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useErrorCodes } from "@/hooks/useErrorCodes";
 import { useDbErrorCodes } from "@/hooks/useDbErrorCodes";
 import { Input } from "./ui/input";
@@ -34,6 +35,7 @@ interface ErrorCode {
 }
 
 const ButtonPage = ({ title }: ButtonPageProps) => {
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const routeName = location.pathname.slice(1);
   
@@ -95,12 +97,19 @@ const ButtonPage = ({ title }: ButtonPageProps) => {
 
   return (
     <div className="page-container">
-      <TopRightControls />
+      <button
+        onClick={toggleTheme}
+        className="theme-toggle"
+        aria-label="Toggle theme"
+      >
+        {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
+      </button>
 
       <main>
         <h1 className="header">{title}</h1>
 
         <div className="flex flex-wrap gap-2 justify-center mb-6">
+          <Settings />
           <ServiceHistory />
           <EquipmentScanner />
           <TroubleshootingWizard />

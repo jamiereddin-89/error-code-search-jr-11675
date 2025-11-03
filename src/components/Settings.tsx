@@ -12,7 +12,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import { Separator } from "./ui/separator";
-import { useTheme } from "@/contexts/ThemeContext";
 
 export const Settings = () => {
   const [offlineMode, setOfflineMode] = useState(
@@ -21,12 +20,12 @@ export const Settings = () => {
   const [notifications, setNotifications] = useState(
     localStorage.getItem("notifications") !== "false"
   );
-  const { theme, toggleTheme } = useTheme();
 
   const handleOfflineModeChange = (checked: boolean) => {
     setOfflineMode(checked);
     localStorage.setItem("offlineMode", String(checked));
     if (checked) {
+      // Trigger offline data download
       window.dispatchEvent(new CustomEvent("downloadOfflineData"));
     }
   };
@@ -53,23 +52,6 @@ export const Settings = () => {
             <TabsTrigger value="about">About</TabsTrigger>
           </TabsList>
           <TabsContent value="general" className="space-y-4">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="theme-toggle" className="flex flex-col gap-1">
-                <span className="font-medium">Dark Mode</span>
-                <span className="text-sm text-muted-foreground">
-                  Toggle application theme
-                </span>
-              </Label>
-              <Switch
-                id="theme-toggle"
-                checked={theme === "dark"}
-                onCheckedChange={(checked) => {
-                  const isDark = theme === "dark";
-                  if (checked !== isDark) toggleTheme();
-                }}
-              />
-            </div>
-            <Separator />
             <div className="flex items-center justify-between">
               <Label htmlFor="offline-mode" className="flex flex-col gap-1">
                 <span className="font-medium">Offline Mode</span>
