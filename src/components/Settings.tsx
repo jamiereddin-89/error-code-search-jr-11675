@@ -133,7 +133,7 @@ export const Settings = () => {
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-medium">Version:</span>
-                <span className="font-semibold">1.6.0</span>
+                <span className="font-semibold">1.6.2</span>
               </div>
             </div>
           </TabsContent>
