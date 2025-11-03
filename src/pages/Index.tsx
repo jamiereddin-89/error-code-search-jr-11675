@@ -8,22 +8,29 @@ import { TroubleshootingWizard } from "@/components/TroubleshootingWizard";
 import { PhotoDiagnosis } from "@/components/PhotoDiagnosis";
 import { CostEstimator } from "@/components/CostEstimator";
 
-const buttonNames = [
-  "Joule Victorum",
-  "Joule Samsung",
-  "Joule Modular Air",
-  "DeDietrich Strateo",
-  "LG Thermia",
-  "Hitachi Yutaki",
-  "Panasonic Aquarea",
-  "Grant Areona",
-  "Itec Thermia",
-  "Smart Control",
-  "System Status",
-];
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+
+const extraButtons = ["Smart Control", "System Status"];
 
 const Index = () => {
   const { isAdmin } = useUserRole();
+  const [dynamicButtons, setDynamicButtons] = useState<string[]>([]);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const { data, error } = await supabase.from('models').select('id,name,model_number,brand_id,brands(name)').order('name');
+        if (error) throw error;
+        const names = (data||[]).map((m:any) => `${m.brands?.name||''} ${m.name}`.trim());
+        setDynamicButtons([...new Set(names.concat(extraButtons))]);
+      } catch (err) {
+        console.error('Error loading dynamic buttons', err);
+        setDynamicButtons(extraButtons);
+      }
+    };
+    load();
+  }, []);
 
   return (
     <div className="page-container">
@@ -49,7 +56,7 @@ const Index = () => {
             My Favorites
           </Link>
 
-          {buttonNames.map((name, index) => (
+          {dynamicButtons.map((name, index) => (
             <Link
               key={index}
               to={`/${name.toLowerCase().replace(/\s+/g, "-")}`}
